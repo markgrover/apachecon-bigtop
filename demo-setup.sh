@@ -43,6 +43,19 @@ mysql -uroot -proot -e "load data local infile 'dataset/DEC_00_SF3_P077_with_ann
 # Install init-hdfs script it's only present starting Bigtop 0.6 (BIGTOP-547)
 wget https://raw.github.com/apache/bigtop/master/bigtop-packages/src/common/hadoop/init-hdfs.sh
 mv init-hdfs.sh ~
-sudo chmod 755 ~/init-hdfs.sh
+chmod 755 ~/init-hdfs.sh
+
 # There is a bug in init-hdfs.sh right now because of which it doesn't create the /user/$USER directory in HDFS. This hack goes around that bug (BIGTOP-852)
-sed -i -e '$a sudo -u hdfs hadoop fs -mkdir /user/$USER\nsudo -u hdfs hadoop fs -chmod -R 777 /user/$USER\nsudo -u hdfs hadoop fs -chown $USER /user/$USER' ~/init-hdfs.sh
+sed -i -e '$a sudo -u hdfs hadoop fs -mkdir /user/$USER\nsudo -u hdfs hadoop fs -chmod -R 777 /user/$USER\nsudo -u hdfs hadoop fs -chown $USER /user/$USER' -e "s/\-ex/-x/g" ~/init-hdfs.sh
+
+# Plan B: in case of internet connectivity, it will be nice to have all the debs and dependencies so
+# we can just install all components from there
+mkdir debs
+cd debs
+# This was done on lucid which doesn't have the recently introduced apt-get download functionality
+# so we have to do some hackery to download all the debs required
+PKGS="bigtop-jsvc bigtop-utils hadoop hadoop-client hadoop-conf-pseudo hadoop-hdfs hadoop-hdfs-datanode \
+hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode hadoop-mapreduce hadoop-mapreduce-historyserver \
+hadoop-yarn hadoop-yarn-nodemanager hadoop-yarn-resourcemanager hive sqoop zookeeper"
+OR_SEPARATED=${PKGS// /\\|}
+URLS=`curl http://bigtop01.cloudera.org:8080/job/Bigtop-0.5.0/label=lucid//lastSuccessfulBuild/artifact/output/apt/dists/bigtop/contrib/binary-amd64/Packages | sed -ne '/^Filename:/s#^Filename: #'"http://bigtop01.cloudera.org:8080/job/Bigtop-0.5.0/label=lucid//lastSuccessfulBuild/artifact/output/apt/"'#p' | grep $OR_SEPARATED`
