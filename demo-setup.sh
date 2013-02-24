@@ -1,8 +1,8 @@
 #!/bin/bash
 # This was ran on Lucid 64 bit machine.
 # You would need a 64 bit machine to run Bigtop. However, this script can be easily ported to a different Linux based OS
-WORKSPACE=workspace
-DATASET_LOC=https://raw.github.com/markgrover/apachecon-bigtop/master/median_income_by_zipcode_census_2000.zip
+WORKSPACE="workspace"
+DATASET_LOC="https://raw.github.com/markgrover/apachecon-bigtop/master/median_income_by_zipcode_census_2000.zip"
 
 # We need curl later
 sudo apt-get -y install curl
