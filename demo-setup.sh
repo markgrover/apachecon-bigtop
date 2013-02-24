@@ -13,7 +13,9 @@ cd $WORKSPACE
 sudo apt-get update
 # Install java6 JDK
 wget http://archive.cloudera.com/cm4/ubuntu/lucid/amd64/cm/pool/contrib/o/oracle-j2sdk1.6/oracle-j2sdk1.6_1.6.0+update31_amd64.deb
-sudo dpkg -i oracle-j2sdk1.6_1.6.0+update31_amd64.deb
+# Installing java might return a non-zero return code because of missing dependencies. This will be fixed by the next
+# command to resolve broken dependecies but we should make the java installation forcefully succeed anyways
+sudo dpkg -i oracle-j2sdk1.6_1.6.0+update31_amd64.deb || :
 sudo apt-get -y -f install
 
 # Install Mysql Server 5.1
