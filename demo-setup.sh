@@ -4,8 +4,8 @@
 WORKSPACE="workspace"
 DATASET_LOC="https://raw.github.com/markgrover/apachecon-bigtop/master/median_income_by_zipcode_census_2000.zip"
 
-# We need curl later
-sudo apt-get -y install curl
+# Install some essential packages
+sudo apt-get -y install curl vim
 
 mkdir -p $WORKSPACE
 cd $WORKSPACE
@@ -60,3 +60,6 @@ hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode hadoop-mapreduce hadoop-mapre
 hadoop-yarn hadoop-yarn-nodemanager hadoop-yarn-resourcemanager hive sqoop zookeeper"
 OR_SEPARATED=${PKGS// /\\|}
 URLS=`curl http://bigtop01.cloudera.org:8080/job/Bigtop-0.5.0/label=lucid//lastSuccessfulBuild/artifact/output/apt/dists/bigtop/contrib/binary-amd64/Packages | sed -ne '/^Filename:/s#^Filename: #'"http://bigtop01.cloudera.org:8080/job/Bigtop-0.5.0/label=lucid//lastSuccessfulBuild/artifact/output/apt/"'#p' | grep $OR_SEPARATED`
+wget $URLS
+cd ..
+
