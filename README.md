@@ -15,7 +15,7 @@ File list and description
 
 Instructions
 ------------
-Borrowed from the [Bigtop wiki page](https://cwiki.apache.org/confluence/display/BIGTOP/How+to+install+Hadoop+distribution+from+Bigtop+0.5.0)
+Inspired from the [Bigtop wiki page](https://cwiki.apache.org/confluence/display/BIGTOP/How+to+install+Hadoop+distribution+from+Bigtop+0.5.0)
 * Add Bigtop key so you can use the Bigtop artifacts with apt-get
 <pre>
 wget -O- http://archive.apache.org/dist/bigtop/bigtop-0.5.0/repos/GPG-KEY-bigtop | sudo apt-key add -
